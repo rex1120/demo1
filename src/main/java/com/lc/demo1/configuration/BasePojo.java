@@ -1,15 +1,18 @@
 package com.lc.demo1.configuration;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -25,6 +28,25 @@ public abstract class BasePojo extends Model<BasePojo> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Long id;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @TableField(fill = FieldFill.INSERT)
+    private Date createDate;
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @TableField(fill = FieldFill.UPDATE)
+    private Date updateDate;
+
+    /**
+     * 删除标记（1：未删，0：已删）
+     */
+    @TableLogic(value = "1",delval = "0")
+    private Integer delFlag;
 
     /**
      * 是否正序排序
@@ -51,9 +73,7 @@ public abstract class BasePojo extends Model<BasePojo> implements Serializable {
      * @Param []
      * @return java.util.function.Function<?,java.lang.Object>
      */
-    public SFunction<?, Object> getOrderColumnStr(String orderColumn) {
-        return null;
-    }
+    public abstract SFunction<?, Object> getOrderColumnStr(String orderColumn);
 
 
     /**

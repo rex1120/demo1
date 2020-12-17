@@ -1,5 +1,6 @@
 package com.lc.demo1.modules.entity;
 
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.lc.demo1.configuration.BasePojo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +12,7 @@ import java.util.Date;
  * 文件存储表(SysFile)实体类
  *
  * @author lc
- * @since 2020-12-14 14:20:49
+ * @since 2020-12-17 15:01:11
  */
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,7 +20,6 @@ import java.util.Date;
 @Data
 @Table(name = "sys_file")
 public class SysFile extends BasePojo {
-
     /**
      * 文件名称
      */
@@ -52,10 +52,7 @@ public class SysFile extends BasePojo {
      * 上传人id
      */
     private String uploadUserId;
-    /**
-     * 删除标记（1：未删，0：已删）
-     */
-    private Integer delFlag;
+
     /**
      * 标签
      */
@@ -73,5 +70,62 @@ public class SysFile extends BasePojo {
      */
     private String hashCode;
 
-
+    /**
+     * @Author lc
+     * @Description 重写基础公共类方法
+     * @Date
+     * @Param []
+     */
+    @Override
+    public SFunction<SysFile, Object> getOrderColumnStr(String orderColumn) {
+        SFunction<SysFile, Object> orderColumnFn;
+        if (orderColumn != null) {
+            switch (orderColumn) {
+                case "fileName":
+                    orderColumnFn = SysFile::getFileName;
+                    break;
+                case "fileUrl":
+                    orderColumnFn = SysFile::getFileUrl;
+                    break;
+                case "fileLocation":
+                    orderColumnFn = SysFile::getFileLocation;
+                    break;
+                case "fileSuffix":
+                    orderColumnFn = SysFile::getFileSuffix;
+                    break;
+                case "fileSize":
+                    orderColumnFn = SysFile::getFileSize;
+                    break;
+                case "relationId":
+                    orderColumnFn = SysFile::getRelationId;
+                    break;
+                case "relationTable":
+                    orderColumnFn = SysFile::getRelationTable;
+                    break;
+                case "uploadUserId":
+                    orderColumnFn = SysFile::getUploadUserId;
+                    break;
+                case "tag":
+                    orderColumnFn = SysFile::getTag;
+                    break;
+                case "uploadDate":
+                    orderColumnFn = SysFile::getUploadDate;
+                    break;
+                case "assortment":
+                    orderColumnFn = SysFile::getAssortment;
+                    break;
+                case "hashCode":
+                    orderColumnFn = SysFile::getHashCode;
+                    break;
+                default:
+                    this.isAsc = false;
+                    orderColumnFn = SysFile::getCreateDate;
+                    break;
+            }
+        } else {
+            this.isAsc = false;
+            orderColumnFn = SysFile::getCreateDate;
+        }
+        return orderColumnFn;
+    }
 }
